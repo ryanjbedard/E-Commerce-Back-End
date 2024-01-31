@@ -32,29 +32,15 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   // create a new tag
-  function addTag() {
-    db.findAllTags()
-      .then(([rows]) => {
-        let tags = rows;
-        const tagChoices = tags.map(({ id, name }) => ({
-          name: name,
-          value: id
-        }));
-  
-        prompt([
-          {
-            name: "title",
-            message: "What is the name of the tag?"
-          },
-        ])
-          .then(role => {
-            db.createTag(Tag)
-              .then(() => console.log(`Added ${tag.title} to the database`))
-              .then(() => loadMainPrompts())
-          })
-      })
+  try {
+    const tagData = await tagCard.create({
+      tag_id: req.body.tag_id,
+    });
+    res.status(200).json(tagData);
+  } catch (err) {
+    res.status(400).json(err);
   }
 });
 
@@ -66,7 +52,7 @@ router.put('/:id', async (req, res) => {
         id: req.params.id,
       },
     });
-    if (!TagData[0]) {
+    if (!tagData[0]) {
       res.status(404).json({ message: 'No tag with this id!' });
       return;
     }

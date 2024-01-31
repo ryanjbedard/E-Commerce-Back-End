@@ -18,7 +18,7 @@ Cagegory.belongsTo(Products, {
 
 
 // Products belongToMany Tags (through ProductTag)
-Products.belongsTo(Catetories, {
+Products.belongsTo(Category, {
   foreignKey: 'category_id',
 });
 
